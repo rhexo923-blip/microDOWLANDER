@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WinHub Pro - Ultra Fast & Clean Suite</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --bg-base: #080B11;
+      --bg-surface: #0F1523;
+      --bg-card: #151D30;
+      --bg-card-hover: #1C2640;
+      --accent-gradient: linear-gradient(135deg, #3B82F6, #6366F1);
+      --accent-solid: #3B82F6;
+      --accent-hover: #2563EB;
+      --accent-glow: rgba(59, 130, 246, 0.35);
+      --success: #10B981;
+      --warning: #F59E0B;
+      --danger: #EF4444;
+      --text-primary: #F8FAFC;
+      --text-secondary: #94A3B8;
+      --text-dim: #64748B;
+      --border-subtle: #1E293B;
+      --border-focus: #38BDF8;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      user-select: none;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Top Navigation Bar */
+    header {
+      background: rgba(15, 21, 35, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 10px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+      z-index: 10;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--accent-gradient);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 14px var(--accent-glow);
+    }
+
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      background: linear-gradient(90deg, #FFFFFF, #93C5FD);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-pill {
+      font-size: 0.68rem;
+      background: rgba(59, 130, 246, 0.15);
+      color: #93C5FD;
+      padding: 2px 8px;
+      border-radius: 20px;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      font-weight: 600;
+    }
+
+    /* Tabs */
+    .nav-tabs {
+      display: flex;
+      gap: 4px;
+      background: rgba(8, 11, 17, 0.7);
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      padding: 7px 14px;
+      border-radius: 7px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .tab-btn.active {
+      background: var(--accent-solid);
+      color: #FFFFFF;
+      box-shadow: 0 2px 10px var(--accent-glow);
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      padding: 16px 24px;
+      gap: 14px;
+    }
+
+    .tab-content {
+      display: none;
+      height: 100%;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .tab-content.active {
+      display: flex;
+    }
+
+    /* Category Filter Pills */
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      flex-shrink: 0;
+    }
+
+    .filter-bar::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .pill-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pill-btn:hover {
+      border-color: #334155;
+      color: var(--text-primary);
+    }
+
+    .pill-btn.active {
+      background: var(--accent-solid);
+      border-color: var(--accent-solid);
+      color: #FFF;
+      box-shadow: 0 2px 8px var(--accent-glow);
+    }
+
+    /* Action Ribbon */
+    .action-ribbon {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    }
+
+    .search-wrap {
+      position: relative;
+      width: 320px;
+    }
+
+    .search-wrap i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      font-size: 0.8rem;
+    }
+
+    .search-input {
+      background: var(--bg-base);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 8px 12px 8px 34px;
+      color: var(--text-primary);
+      width: 100%;
+      font-size: 0.82rem;
+      outline: none;
+      transition: border 0.15s;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent-solid);
+      box-shadow: 0 0 0 2px var(--accent-glow);
+    }
+
+    .btn {
+      background: var(--accent-solid);
+      color: #FFF;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.15s ease;
+    }
+
+    .btn:hover {
+      background: var(--accent-hover);
+      box-shadow: 0 4px 14px var(--accent-glow);
+      transform: translateY(-1px);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      background: #1E293B;
+      color: #E2E8F0;
+    }
+
+    .btn-secondary:hover {
+      background: #334155;
+    }
+
+    .btn-success {
+      background: var(--success);
+    }
+    .btn-success:hover {
+      background: #059669;
+    }
+
+    /* Scrollable Cards Grid */
+    .cards-scroll-area {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 4px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      grid-auto-rows: max-content;
+      gap: 10px;
+    }
+
+    /* Ultra Fast App Card */
+    .app-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      position: relative;
+      contain: content;
+      transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .app-card:hover {
+      background: var(--bg-card-hover);
+      border-color: #334155;
+      transform: translateY(-2px);
+    }
+
+    .app-card.selected {
+      border-color: var(--accent-solid);
+      background: rgba(59, 130, 246, 0.12);
+      box-shadow: inset 0 0 0 1px var(--accent-solid);
+    }
+
+    .app-icon-wrap {
+      width: 38px;
+      height: 38px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      flex-shrink: 0;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .app-details {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .app-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 2px;
+    }
+
+    .app-subtitle {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .app-check {
+      width: 18px;
+      height: 18px;
+      border-radius: 5px;
+      border: 1.5px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+
+    .app-card.selected .app-check {
+      background: var(--accent-solid);
+      border-color: var(--accent-solid);
+    }
+
+    .app-check i {
+      color: #FFF;
+      font-size: 0.65rem;
+      display: none;
+    }
+
+    .app-card.selected .app-check i {
+      display: block;
+    }
+
+    /* Tweaks Grid */
+    .tweaks-grid {
+      flex: 1;
+      overflow-y: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 12px;
+      padding-right: 4px;
+    }
+
+    .tweak-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      transition: border 0.15s;
+    }
+
+    .tweak-card:hover {
+      border-color: #334155;
+    }
+
+    .tweak-tag {
+      font-size: 0.65rem;
+      padding: 2px 7px;
+      background: #1E293B;
+      color: #93C5FD;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .tweak-name {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .tweak-desc {
+      font-size: 0.74rem;
+      color: var(--text-secondary);
+      line-height: 1.35;
+    }
+
+    /* Console Panel */
+    .console-dock {
+      background: #05080E;
+      border-top: 1px solid var(--border-subtle);
+      height: 140px;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .console-head {
+      background: #0D121F;
+      padding: 6px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 0.74rem;
+      color: var(--text-secondary);
+    }
+
+    .console-stream {
+      flex: 1;
+      padding: 8px 18px;
+      overflow-y: auto;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.76rem;
+      line-height: 1.45;
+      color: #6EE7B7;
+      white-space: pre-wrap;
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1E293B;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #3B82F6;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header>
+    <div class="brand">
+      <div class="brand-icon">
+        <i class="fa-solid fa-bolt" style="color: white; font-size: 1.05rem;"></i>
+      </div>
+      <div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span class="brand-title">WinHub Pro</span>
+          <span class="brand-pill" id="totalAppsPill">1114 Paket Yüklendi</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Navigation Tabs -->
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="switchNav('apps')">
+        <i class="fa-solid fa-layer-group"></i> Uygulama Mağazası
+      </button>
+      <button class="tab-btn" onclick="switchNav('tweaks')">
+        <i class="fa-solid fa-wand-magic-sparkles"></i> CTT İnce Ayarları (69)
+      </button>
+      <button class="tab-btn" onclick="switchNav('updates')">
+        <i class="fa-solid fa-arrows-rotate"></i> Depoları Güncelle
+      </button>
+      <button class="tab-btn" onclick="switchNav('system')">
+        <i class="fa-solid fa-microchip"></i> Donanım Monitörü
+      </button>
+    </div>
+  </header>
+
+  <!-- Content Container -->
+  <main>
+    <!-- TAB 1: APPS -->
+    <div id="tab-apps" class="tab-content active">
+      <!-- Category Filter Pills -->
+      <div class="filter-bar" id="categoryFilters">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Action Ribbon -->
+      <div class="action-ribbon">
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <div class="search-wrap">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="appSearch" class="search-input" placeholder="Paket adı veya açıklama ara (örn: chrome, steam, dev)..." oninput="debounceFilter()">
+          </div>
+          <span id="selectedCount" style="font-size: 0.8rem; color: #93C5FD; font-weight: 600;">0 uygulama seçildi</span>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-secondary" onclick="clearSelectedApps()">
+            <i class="fa-solid fa-xmark"></i> Seçimi Temizle
+          </button>
+          <button class="btn" onclick="installSelected()">
+            <i class="fa-solid fa-download"></i> Seçilenleri Sessiz Kur (Silent)
+          </button>
+        </div>
+      </div>
+
+      <!-- Fast Grid (Lazy Slice) -->
+      <div class="cards-scroll-area" id="appsScrollArea" onscroll="handleGridScroll()">
+        <!-- Apps rendered via virtual DOM slice -->
+      </div>
+    </div>
+
+    <!-- TAB 2: CTT TWEAKS -->
+    <div id="tab-tweaks" class="tab-content">
+      <div class="action-ribbon">
+        <div>
+          <h4 style="font-size: 0.95rem;">Chris Titus Tech (CTT) Performans & Debloat Ayarları</h4>
+          <p style="font-size: 0.74rem; color: var(--text-secondary); margin-top: 2px;">Telemetriyi kapatın, arka plan yükünü hafifletin, gecikmeyi (input lag) düşürün.</p>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-secondary" onclick="runQuickAction('clean_temp')">
+            <i class="fa-solid fa-broom"></i> Temp Temizle
+          </button>
+          <button class="btn btn-secondary" onclick="runQuickAction('flush_dns')">
+            <i class="fa-solid fa-wifi"></i> Flush DNS
+          </button>
+          <button class="btn btn-secondary" onclick="runQuickAction('enable_dark_mode')">
+            <i class="fa-solid fa-moon"></i> Koyu Tema
+          </button>
+          <button class="btn btn-secondary" onclick="runQuickAction('sfc_repair')">
+            <i class="fa-solid fa-shield-virus"></i> SFC Onarımı
+          </button>
+          <button class="btn btn-success" onclick="applySelectedTweaks()">
+            <i class="fa-solid fa-bolt"></i> Seçili CTT Ayarlarını Uygula
+          </button>
+        </div>
+      </div>
+
+      <div class="tweaks-grid" id="tweaksGrid">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <!-- TAB 3: UPDATES -->
+    <div id="tab-updates" class="tab-content">
+      <div class="action-ribbon">
+        <div>
+          <h4 style="font-size: 0.95rem;">Sistem Depoları & Paket Yükseltme (Linux APT Stili)</h4>
+          <p style="font-size: 0.74rem; color: var(--text-secondary); margin-top: 2px;">Tek bir komutla tüm programlarınızı resmi kaynaklardan en güncel sürüme taşır.</p>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-secondary" onclick="checkUpdates()">
+            <i class="fa-solid fa-arrows-rotate"></i> Güncellemeleri Tara
+          </button>
+          <button class="btn btn-success" onclick="upgradeAll()">
+            <i class="fa-solid fa-cloud-arrow-down"></i> Hepsini Yükselt (Upgrade All)
+          </button>
+        </div>
+      </div>
+
+      <div id="updatesList" style="flex: 1; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 20px; overflow-y: auto;">
+        <div style="text-align: center; color: var(--text-secondary); padding-top: 40px;">
+          <i class="fa-solid fa-cloud-arrow-up" style="font-size: 2.5rem; margin-bottom: 12px; color: #334155; display: block;"></i>
+          Kurulu yazılımların güncellemelerini listelemek için <b>"Güncellemeleri Tara"</b> butonuna basın.
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: SYSTEM METRICS -->
+    <div id="tab-system" class="tab-content">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px;" id="sysMetrics">
+        <div class="tweak-card">
+          <span style="font-size: 0.72rem; color: var(--text-secondary);">İşletim Sistemi</span>
+          <h4 id="osName" style="font-size: 0.95rem; margin-top: 4px;">Yükleniyor...</h4>
+          <i class="fa-brands fa-windows" style="font-size: 1.8rem; color: #3B82F6; align-self: flex-end;"></i>
+        </div>
+        <div class="tweak-card">
+          <span style="font-size: 0.72rem; color: var(--text-secondary);">İşlemci (CPU)</span>
+          <h4 id="cpuName" style="font-size: 0.95rem; margin-top: 4px;">Yükleniyor...</h4>
+          <i class="fa-solid fa-microchip" style="font-size: 1.8rem; color: #6366F1; align-self: flex-end;"></i>
+        </div>
+        <div class="tweak-card">
+          <span style="font-size: 0.72rem; color: var(--text-secondary);">Bellek Kullanımı (RAM)</span>
+          <h4 id="ramUsage" style="font-size: 0.95rem; margin-top: 4px;">Yükleniyor...</h4>
+          <i class="fa-solid fa-memory" style="font-size: 1.8rem; color: #10B981; align-self: flex-end;"></i>
+        </div>
+        <div class="tweak-card">
+          <span style="font-size: 0.72rem; color: var(--text-secondary);">Sistem Diski (C:)</span>
+          <h4 id="diskUsage" style="font-size: 0.95rem; margin-top: 4px;">Yükleniyor...</h4>
+          <i class="fa-solid fa-hard-drive" style="font-size: 1.8rem; color: #F59E0B; align-self: flex-end;"></i>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Console Log Dock -->
+  <div class="console-dock">
+    <div class="console-head">
+      <span><i class="fa-solid fa-terminal"></i> Terminal & PowerShell Akışı</span>
+      <span style="cursor: pointer;" onclick="clearLogs()"><i class="fa-solid fa-trash-can"></i> Temizle</span>
+    </div>
+    <div id="consoleStream" class="console-stream">[Hazır] WinHub Ultra Engine yüklendi. Komutlar bekleniyor...</div>
+  </div>
+
+  <script>
+    let appCategories = [];
+    let allAppsFlat = [];
+    let visibleFilteredApps = [];
+    let tweaksList = [];
+    let selectedApps = new Set();
+    let selectedTweaks = new Set();
+    let activeCategory = "ALL";
+    let renderLimit = 80; // Performance: lazy load chunks of 80 cards
+    let filterDebounceTimer = null;
+
+    function log(msg) {
+      const el = document.getElementById('consoleStream');
+      const time = new Date().toLocaleTimeString();
+      el.textContent += `\n[${time}] ${msg}`;
+      el.scrollTop = el.scrollHeight;
+    }
+
+    function clearLogs() {
+      document.getElementById('consoleStream').textContent = '[Konsol Temizlendi]';
+    }
+
+    function switchNav(id) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+      const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick').includes(id));
+      if (activeBtn) activeBtn.classList.add('active');
+
+      const target = document.getElementById('tab-' + id);
+      if (target) target.classList.add('active');
+
+      if (id === 'system') loadSystemInfo();
+    }
+
+    async function initSuite() {
+      if (window.pywebview && window.pywebview.api) {
+        try {
+          const resApps = await window.pywebview.api.get_apps();
+          appCategories = JSON.parse(resApps);
+          
+          allAppsFlat = [];
+          appCategories.forEach(cat => {
+            cat.apps.forEach(app => {
+              allAppsFlat.push({
+                ...app,
+                categoryName: cat.category
+              });
+            });
+          });
+
+          document.getElementById('totalAppsPill').textContent = `${allAppsFlat.length} Paket Yüklendi`;
+          renderCategoryPills();
+          applyAppFilters();
+
+          const resTweaks = await window.pywebview.api.get_tweaks();
+          tweaksList = JSON.parse(resTweaks);
+          renderTweaks();
+        } catch (e) {
+          log('Veri yükleme hatası: ' + e);
+        }
+      } else {
+        setTimeout(initSuite, 150);
+      }
+    }
+
+    function renderCategoryPills() {
+      const bar = document.getElementById('categoryFilters');
+      bar.innerHTML = '';
+
+      const allPill = document.createElement('button');
+      allPill.className = 'pill-btn active';
+      allPill.innerHTML = `<i class="fa-solid fa-border-all"></i> Tümü (${allAppsFlat.length})`;
+      allPill.onclick = () => selectCategory("ALL", allPill);
+      bar.appendChild(allPill);
+
+      appCategories.forEach(cat => {
+        const pill = document.createElement('button');
+        pill.className = 'pill-btn';
+        pill.innerHTML = `${cat.category} (${cat.apps.length})`;
+        pill.onclick = () => selectCategory(cat.category, pill);
+        bar.appendChild(pill);
+      });
+    }
+
+    function selectCategory(catName, btnEl) {
+      document.querySelectorAll('.pill-btn').forEach(p => p.classList.remove('active'));
+      btnEl.classList.add('active');
+      activeCategory = catName;
+      renderLimit = 80;
+      applyAppFilters();
+    }
+
+    function debounceFilter() {
+      clearTimeout(filterDebounceTimer);
+      filterDebounceTimer = setTimeout(() => {
+        renderLimit = 80;
+        applyAppFilters();
+      }, 120);
+    }
+
+    function applyAppFilters() {
+      const q = document.getElementById('appSearch').value.toLowerCase().trim();
+      
+      visibleFilteredApps = allAppsFlat.filter(app => {
+        const matchesCategory = (activeCategory === "ALL" || app.categoryName === activeCategory);
+        if (!matchesCategory) return false;
+
+        if (!q) return true;
+        return app.name.toLowerCase().includes(q) || 
+               (app.desc && app.desc.toLowerCase().includes(q)) ||
+               app.id.toLowerCase().includes(q);
+      });
+
+      renderAppSlice();
+    }
+
+    function renderAppSlice() {
+      const container = document.getElementById('appsScrollArea');
+      container.innerHTML = '';
+
+      const slice = visibleFilteredApps.slice(0, renderLimit);
+      
+      const fragment = document.createDocumentFragment();
+
+      slice.forEach(app => {
+        const isSelected = selectedApps.has(app.id);
+        const card = document.createElement('div');
+        card.className = 'app-card' + (isSelected ? ' selected' : '');
+        card.onclick = () => toggleSelectApp(app.id, card);
+
+        const iconCls = app.iconClass || 'fa-solid fa-box';
+        const iconColor = app.iconColor || '#3B82F6';
+
+        card.innerHTML = `
+          <div class="app-icon-wrap" style="color: ${iconColor};">
+            <i class="${iconCls}"></i>
+          </div>
+          <div class="app-details">
+            <div class="app-title" title="${app.name}">${app.name}</div>
+            <div class="app-subtitle" title="${app.desc || app.id}">${app.desc || app.id}</div>
+          </div>
+          <div class="app-check">
+            <i class="fa-solid fa-check"></i>
+          </div>
+        `;
+        fragment.appendChild(card);
+      });
+
+      container.appendChild(fragment);
+      updateSelectedCount();
+    }
+
+    function handleGridScroll() {
+      const container = document.getElementById('appsScrollArea');
+      if (container.scrollTop + container.clientHeight >= container.scrollHeight - 150) {
+        if (renderLimit < visibleFilteredApps.length) {
+          renderLimit += 80;
+          renderAppSlice();
+        }
+      }
+    }
+
+    function toggleSelectApp(id, cardEl) {
+      if (selectedApps.has(id)) {
+        selectedApps.delete(id);
+        cardEl.classList.remove('selected');
+      } else {
+        selectedApps.add(id);
+        cardEl.classList.add('selected');
+      }
+      updateSelectedCount();
+    }
+
+    function clearSelectedApps() {
+      selectedApps.clear();
+      document.querySelectorAll('.app-card.selected').forEach(c => c.classList.remove('selected'));
+      updateSelectedCount();
+    }
+
+    function updateSelectedCount() {
+      document.getElementById('selectedCount').textContent = `${selectedApps.size} uygulama seçildi`;
+    }
+
+    async function installSelected() {
+      if (selectedApps.size === 0) {
+        log('Uyarı: Kurulum yapmak için lütfen en az 1 uygulama seçin.');
+        return;
+      }
+      const list = Array.from(selectedApps);
+      log(`Başlatılıyor: ${list.length} adet uygulama kuruluyor...`);
+      try {
+        const res = await window.pywebview.api.install_apps(list);
+        log(res);
+      } catch (err) {
+        log('Hata: ' + err);
+      }
+    }
+
+    function renderTweaks() {
+      const container = document.getElementById('tweaksGrid');
+      container.innerHTML = '';
+
+      const fragment = document.createDocumentFragment();
+      tweaksList.forEach(tweak => {
+        const card = document.createElement('div');
+        const isSelected = selectedTweaks.has(tweak.id);
+        card.className = 'tweak-card';
+
+        card.innerHTML = `
+          <div>
+            <span class="tweak-tag">${tweak.category}</span>
+            <div class="tweak-name">${tweak.name}</div>
+            <div class="tweak-desc">${tweak.desc || 'Windows performans ve gizlilik optimizasyonu.'}</div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+            <button class="btn btn-secondary" style="font-size: 0.74rem; padding: 5px 12px;" onclick="applySingleTweak('${tweak.id}')">
+              Şimdi Uygula
+            </button>
+            <label style="cursor: pointer; display: flex; align-items: center; gap: 5px; font-size: 0.76rem; color: var(--text-secondary);">
+              <input type="checkbox" ${isSelected ? 'checked' : ''} onchange="toggleSelectTweak('${tweak.id}')"> Toplu Seç
+            </label>
+          </div>
+        `;
+        fragment.appendChild(card);
+      });
+      container.appendChild(fragment);
+    }
+
+    function toggleSelectTweak(id) {
+      if (selectedTweaks.has(id)) {
+        selectedTweaks.delete(id);
+      } else {
+        selectedTweaks.add(id);
+      }
+    }
+
+    async function applySingleTweak(id) {
+      const tweak = tweaksList.find(t => t.id === id);
+      if (tweak) {
+        log(`Ayar uygulanıyor: ${tweak.name}...`);
+        await window.pywebview.api.apply_ctt_tweak(JSON.stringify(tweak));
+      }
+    }
+
+    async function applySelectedTweaks() {
+      if (selectedTweaks.size === 0) {
+        log('Uyarı: Lütfen en az bir CTT ayarı seçin.');
+        return;
+      }
+      const selected = tweaksList.filter(t => selectedTweaks.has(t.id));
+      log(`Toplu ayar: ${selected.length} CTT optimizasyonu uygulanıyor...`);
+      await window.pywebview.api.apply_multiple_tweaks(JSON.stringify(selected));
+    }
+
+    async function runQuickAction(action) {
+      log(`Hızlı eylem: ${action}...`);
+      await window.pywebview.api.run_quick_action(action);
+    }
+
+    async function checkUpdates() {
+      log('Depolar taranıyor (winget upgrade)... Lütfen bekleyin...');
+      const listDiv = document.getElementById('updatesList');
+      listDiv.innerHTML = '<div style="padding:40px; text-align:center;"><i class="fa-solid fa-spinner fa-spin" style="font-size:2rem; color:var(--accent-solid);"></i><br><br>Depolar ve güncellemeler taranıyor...</div>';
+      try {
+        const res = await window.pywebview.api.check_updates();
+        listDiv.innerHTML = `<pre style="font-family: Consolas, monospace; font-size: 0.82rem; color: #E2E8F0; white-space: pre-wrap;">${res}</pre>`;
+        log('Güncelleme taraması bitti.');
+      } catch (e) {
+        listDiv.innerHTML = 'Hata: ' + e;
+        log('Hata: ' + e);
+      }
+    }
+
+    async function upgradeAll() {
+      log('Linux APT stili toplu paket yükseltmesi başlatıldı...');
+      try {
+        const res = await window.pywebview.api.upgrade_all();
+        log(res);
+      } catch (e) {
+        log('Hata: ' + e);
+      }
+    }
+
+    async function loadSystemInfo() {
+      try {
+        const info = await window.pywebview.api.get_system_info();
+        const data = JSON.parse(info);
+        document.getElementById('osName').textContent = data.os;
+        document.getElementById('cpuName').textContent = data.cpu;
+        document.getElementById('ramUsage').textContent = data.ram;
+        document.getElementById('diskUsage').textContent = data.disk;
+      } catch (e) {
+        console.error('Sys info error:', e);
+      }
+    }
+
+    window.addEventListener('pywebviewready', () => {
+      initSuite();
+      loadSystemInfo();
+    });
+  </script>
+</body>
+</html>
